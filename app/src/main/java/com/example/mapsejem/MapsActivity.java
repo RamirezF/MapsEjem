@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -27,6 +28,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap cMap;
     private MarkerOptions marker;
     private MarkerOptions campoy;
+    private Marker chosica_marker;
+    private Marker campoy_marker;
     private ActivityMapsBinding binding;
 
     @Override
@@ -62,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         marker.title("CHOSICA");
         marker.snippet("chosiquita");
         marker.icon(BitmapDescriptorFactory.fromResource(android.R.drawable.star_on));            // android.R.drawable.star_on
-        mMap.addMarker(marker);
+        chosica_marker = mMap.addMarker(marker);
 
         // Polígono Local 23 (Completo) CHOSICA
         final LatLng cho_01 = new LatLng(-11.924422076093817, -76.68757473871402);
@@ -185,6 +188,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if(marker.equals(chosica_marker)){
+                    Toast.makeText(MapsActivity.this, "Marcador de Chosica" + marker.getTitle(), Toast.LENGTH_SHORT).show();
+                    return true;
+                }else if(marker.equals(campoy_marker)){
+                    Toast.makeText(MapsActivity.this, "Marcador de Campoy" + marker.getTitle(), Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         // Posición de Cámara principal
         CameraPosition camera = new CameraPosition.Builder()
                 .target(chosica)                                    //local21
@@ -211,7 +228,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         campoy.title("CAMPOY");
         campoy.snippet("Camposito");
         campoy.icon(BitmapDescriptorFactory.fromResource(android.R.drawable.star_on));
-        cMap.addMarker(campoy);
+        campoy_marker = mMap.addMarker(campoy);
         // Polígono Local 24    CAMPOY
         final LatLng p2401 = new LatLng(-12.024076387091215, -76.97699645338558);
         final LatLng p2402 = new LatLng(-12.025680557676722, -76.97724008138084);
@@ -301,4 +318,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         */
 //**************************************************************************************************************************************************************************
     }
+
 }
