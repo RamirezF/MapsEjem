@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity;
 import android.graphics.Camera;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -22,6 +23,8 @@ import com.example.mapsejem.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 
+import java.util.Locale;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -31,6 +34,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker chosica_marker;
     private Marker campoy_marker;
     private ActivityMapsBinding binding;
+    private Polygon choLoc;
+    private Polygon campoyLoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +170,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .add(cho_46)
                 .add(cho_47)
                 .fillColor(0x33FF0000).strokeColor(Color.RED).strokeWidth(3);
-        Polygon choLoc = mMap.addPolygon(cho_loc);
+        choLoc = mMap.addPolygon(cho_loc);
         choLoc.setClickable(true);
         choLoc.setTag("chosica");
         mMap.addPolygon(cho_loc);
@@ -176,7 +181,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onPolygonClick(Polygon polygon) {
                 if (polygon.getTag()=="campoy") {
                     Toast.makeText(MapsActivity.this, "Saludos Campoy", Toast.LENGTH_SHORT).show();
-                    polygon.setFillColor(0x33001fff);
+                    polygon.setFillColor(0x0027FF);
                     polygon.setStrokeColor(0x33001fff);
                 }
                 else if (polygon.getTag() == "chosica")
@@ -188,14 +193,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+
+        // Evento al presionar el marcador
+
         mMap.setOnMarkerClickListener(new OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 if(marker.equals(chosica_marker)){
-                    Toast.makeText(MapsActivity.this, "Marcador de Chosica" + marker.getTitle(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MapsActivity.this, "Marcador de " + marker.getTitle(), Toast.LENGTH_SHORT).show();
+                    choLoc.setFillColor(0x0027FF);
+                    choLoc.setStrokeColor(0x0027FF);
+                    campoyLoc.setFillColor(0x332aff00);
+                    campoyLoc.setStrokeColor(0x332aff00);
                     return true;
                 }else if(marker.equals(campoy_marker)){
-                    Toast.makeText(MapsActivity.this, "Marcador de Campoy" + marker.getTitle(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MapsActivity.this, "Marcador de " + marker.getTitle(), Toast.LENGTH_SHORT).show();
+                    campoyLoc.setFillColor(0x0027FF);
+                    campoyLoc.setStrokeColor(0x0027FF);
+                    choLoc.setFillColor(0x332aff00);
+                    choLoc.setStrokeColor(0x332aff00);
                     return true;
                 }
                 return false;
@@ -229,6 +245,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         campoy.snippet("Camposito");
         campoy.icon(BitmapDescriptorFactory.fromResource(android.R.drawable.star_on));
         campoy_marker = mMap.addMarker(campoy);
+
         // Polígono Local 24    CAMPOY
         final LatLng p2401 = new LatLng(-12.024076387091215, -76.97699645338558);
         final LatLng p2402 = new LatLng(-12.025680557676722, -76.97724008138084);
@@ -299,7 +316,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .add(p2432)
                 .add(p2433)
                 .fillColor(0x33FF0000).strokeColor(Color.RED).strokeWidth(3);
-        Polygon campoyLoc = cMap.addPolygon(laland1);
+        campoyLoc = cMap.addPolygon(laland1);
         campoyLoc.setClickable(true);
         campoyLoc.setTag("campoy");
         cMap.addPolygon(laland1);
